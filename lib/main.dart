@@ -1,23 +1,10 @@
 import 'package:flutter/material.dart';
+import 'style.dart';
 
 void main() {
   runApp(
     MaterialApp(
-      theme: ThemeData(
-        appBarTheme: AppBarTheme(
-          color: Colors.white,
-          elevation: 1,
-          titleTextStyle: TextStyle(
-            color: Colors.black,
-            fontSize: 25
-          ),
-          actionsIconTheme: IconThemeData(color: Colors.black)
-        ),
-        iconTheme: IconThemeData( color: Colors.black ),
-        textTheme: TextTheme(
-          bodyText2: TextStyle(color: Colors.red)
-        ),
-      ),
+      theme: theme,
       home: MyApp()
     )
   );
@@ -46,6 +33,14 @@ class MyApp extends StatelessWidget {
         ],
       ),
       body: Text('안녕'),
+      bottomNavigationBar: BottomNavigationBar(
+        showSelectedLabels: false,
+        showUnselectedLabels: false,
+        items: [
+          BottomNavigationBarItem(icon: Icon(Icons.home_outlined), label: '홈'),
+          BottomNavigationBarItem(icon: Icon(Icons.shopping_bag_outlined), label: '샵'),
+        ],
+      ),
     );
   }
 }
