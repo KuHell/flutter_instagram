@@ -1,4 +1,5 @@
 // import 'package:flutter/cupertino.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'style.dart';
 import 'package:http/http.dart' as http;
@@ -179,7 +180,15 @@ class _HomeState extends State<Home> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text('좋아요 ${widget.homeData[i]['likes']}'),
-                  Text(widget.homeData[i]['user']),
+                  GestureDetector(
+                    child: Text(widget.homeData[i]['user']),
+                    onTap: (){
+                      Navigator.push(context, PageRouteBuilder(pageBuilder: 
+                        (context, a1, a2) => Profile(),
+                        transitionsBuilder: (context, a1 , a2, child) => FadeTransition(opacity: a1, child: child,)
+                      ));
+                    },
+                  ),
                   Text(widget.homeData[i]['content']),
                 ],
               ),
@@ -227,6 +236,17 @@ class Upload extends StatelessWidget {
           ],
         )
     );
+  }
+}
 
+class Profile extends StatelessWidget {
+  const Profile({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(),
+      body: Text('프로필 페이지'),
+    );
   }
 }
