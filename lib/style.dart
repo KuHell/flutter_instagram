@@ -12,7 +12,7 @@ var theme = ThemeData(
   ),
   iconTheme: IconThemeData( color: Colors.black ),
   textTheme: TextTheme(
-      bodyText2: TextStyle(color: Colors.red)
+      // bodyText2: TextStyle(color: Colors.red)
   ),
   bottomNavigationBarTheme: BottomNavigationBarThemeData(
     selectedItemColor: Colors.black
