@@ -9,6 +9,11 @@ void main() {
   runApp(
     MaterialApp(
       theme: theme,
+      // initialRoute: '/',
+      // routes: {
+      //   '/': (context) => Text('첫 페이지'),
+      //   '/detail': (context) => Text('둘째 페이지'),
+      // },
       home: MyApp()
     )
   );
@@ -62,7 +67,11 @@ class _MyAppState extends State<MyApp> {
         actions: [
           IconButton(
             icon: Icon(Icons.add_box_outlined),
-            onPressed: (){},
+            onPressed: (){
+              Navigator.push(context, 
+                MaterialPageRoute(builder: (context) => Upload())
+              );
+            },
             iconSize: 30,
           ),
         ],
@@ -103,7 +112,6 @@ class _HomeState extends State<Home> {
     widget.addGet(jsonDecode(result.body));
   }
 
-
   @override
   void initState() {
     super.initState();
@@ -141,5 +149,29 @@ class _HomeState extends State<Home> {
     } else {
       return CircularProgressIndicator();
     }
+  }
+}
+
+class Upload extends StatelessWidget {
+  const Upload({Key? key}) : super(key: key);
+  @override
+
+  Widget build(BuildContext context) {
+    return Scaffold(
+        appBar: AppBar(),
+        body: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text('이미지업로드화면'),
+            IconButton(
+                onPressed: (){
+                  Navigator.pop(context);
+                },
+                icon: Icon(Icons.close)
+            ),
+          ],
+        )
+    );
+
   }
 }
