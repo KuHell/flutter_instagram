@@ -1,6 +1,7 @@
 // import 'package:flutter/cupertino.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:instagram/notification.dart';
 import 'style.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -89,11 +90,16 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     super.initState();
     getData('https://codingapple1.github.io/app/data.json');
+    initNotification(context);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: FloatingActionButton(onPressed: () {
+        showNotification();
+        print('눌렀음');
+      }, child: Text('+'),),
       appBar: AppBar(
         shape: Border(
           bottom: BorderSide(
