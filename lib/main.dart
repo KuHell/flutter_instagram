@@ -8,17 +8,24 @@ import 'dart:convert';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:provider/provider.dart';
 
 void main() {
   runApp(
-    MaterialApp(
-      theme: theme,
-      // initialRoute: '/',
-      // routes: {
-      //   '/': (context) => Text('첫 페이지'),
-      //   '/detail': (context) => Text('둘째 페이지'),
-      // },
-      home: MyApp()
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => Store()),
+        // ChangeNotifierProvider(create: (context) => Store1()),
+      ],
+      child: MaterialApp(
+        theme: theme,
+        // initialRoute: '/',
+        // routes: {
+        //   '/': (context) => Text('첫 페이지'),
+        //   '/detail': (context) => Text('둘째 페이지'),
+        // },
+        home: MyApp()
+      ),
     )
   );
 }
@@ -239,14 +246,105 @@ class Upload extends StatelessWidget {
   }
 }
 
-class Profile extends StatelessWidget {
+class Profile extends StatefulWidget {
   const Profile({super.key});
+  @override
+  State<Profile> createState() => _ProfileState();
+}
+
+class _ProfileState extends State<Profile> {
+  @override
+  void initState() {
+    super.initState();
+    context.read<Store>().getData();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
-      body: Text('프로필 페이지'),
+      body: Profile1()
     );
   }
+}
+
+class ProfileHeader extends StatelessWidget {
+  const ProfileHeader({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    // print('zzzzzz ${context.watch<Store>().profileImage}');
+    return Container(
+      padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          CircleAvatar(
+            radius: 30,
+            backgroundImage: AssetImage('assets/main.PNG'),
+          ),
+          Text('팔로우 ${context.watch<Store>().friender}명'),
+          ElevatedButton(
+              onPressed: (){
+                context.read<Store>().addCount();
+              },
+              child: Text('팔로우')
+          )
+        ],
+      ),
+    );
+  }
+}
+
+class Profile1 extends StatelessWidget {
+  const Profile1({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text(context.watch<Store>().name)),
+      body: CustomScrollView(
+        slivers: [
+          SliverToBoxAdapter(
+            child: ProfileHeader(),
+          ),
+          SliverGrid(
+              delegate: SliverChildBuilderDelegate(
+                (c, i) => Container(
+                  child: Image.network(context.watch<Store>().profileImage[i]),
+                ),
+                childCount: context.watch<Store>().profileImage.length,
+              ),
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3)
+          ),
+        ],
+      )
+    );
+  }
+}
+
+
+
+class Store extends ChangeNotifier {
+  var friend = false;
+  var friender = 0;
+  var profileImage = [];
+  
+  getData() async {
+    var result = await http.get(Uri.parse('https://codingapple1.github.io/app/profile.json'));
+    profileImage = jsonDecode(result.body);
+    notifyListeners();
+  }
+  
+  addCount() {
+    if(!friend) {
+      friender++;
+      friend = true;
+    }else {
+      friender--;
+      friend = false;
+    }
+    notifyListeners();
+  }
+  
+  var name = 'john kim';
 }
