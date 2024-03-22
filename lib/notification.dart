@@ -11,7 +11,7 @@ initNotification(context) async {
   var androidSetting = AndroidInitializationSettings('app_icon');
 
   //ios에서 앱 로드시 유저에게 권한요청하려면
-  var iosSetting = IOSInitializationSettings(
+  var iosSetting = DarwinInitializationSettings(
     requestAlertPermission: true,
     requestBadgePermission: true,
     requestSoundPermission: true,
@@ -24,7 +24,7 @@ initNotification(context) async {
   await notifications.initialize(
     initializationSettings,
     //알림 누를때 함수실행하고 싶으면
-    onSelectNotification: (payload) {
+    onDidReceiveNotificationResponse: (payload) {
       Navigator.push(context, MaterialPageRoute(builder: (context) => Text('새로운 페이지')));
     }
   );
@@ -41,7 +41,7 @@ showNotification() async {
     color: Color.fromARGB(255, 255, 0, 0),
   );
 
-  var iosDetails = IOSNotificationDetails(
+  var iosDetails = DarwinNotificationDetails(
     presentAlert: true,
     presentBadge: true,
     presentSound: true,
